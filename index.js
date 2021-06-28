@@ -1,4 +1,5 @@
-const octokit = require("octokit");
+const { Octokit } = require("@octokit/rest");
+const octokit = new Octokit();
 
 exports.handler = async (event) => {
   let title = event.title;
