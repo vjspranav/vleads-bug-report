@@ -19,6 +19,7 @@
   "homepage": "https://github.com/vjspranav/vleads-bug-report#readme",
   "dependencies": {
     "@octokit/rest": "^18.6.3",
+    "getenv": "^1.0.0",
     "octokit": "^1.1.0"
   }
 }

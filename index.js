@@ -1,3 +1,4 @@
+const getenv = require('getenv');
 const { Octokit } = require("@octokit/rest");
 const octokit = new Octokit({
   auth: getenv.string("GITHUB_ACCESS_TOKEN"),
