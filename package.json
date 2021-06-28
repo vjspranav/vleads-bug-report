@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/vjspranav/vleads-bug-report/issues"
   },
-  "homepage": "https://github.com/vjspranav/vleads-bug-report#readme"
+  "homepage": "https://github.com/vjspranav/vleads-bug-report#readme",
+  "dependencies": {
+    "octokit": "^1.1.0"
+  }
 }
