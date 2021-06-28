@@ -1,14 +1,17 @@
 const { Octokit } = require("@octokit/rest");
-const octokit = new Octokit();
+const octokit = new Octokit({
+  auth: getenv.string("GITHUB_ACCESS_TOKEN"),
+});
 
+const [owner, repo] = getenv.string("GITHUB_REPOSITORY").split("/");
 exports.handler = async (event) => {
   let title = event.title;
-  let description = event.description;
-  const response = await octokit.request("POST /repos/vjspranav/TestIssuesRepo/issues", {
-    owner: "vleads",
-    repo: "TestIssuesRepo",
-    title: title,
-    body: description
+  let body = event.description;
+  const response = await octokit.issues.create({
+    owner,
+    repo,
+    body,
+    title,
   });
   return response;
 };
