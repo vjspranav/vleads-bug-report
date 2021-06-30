@@ -21,16 +21,14 @@ jobs:
         env:
           CI: true
       - name: zip
-        working-directory: ./server
         uses: montudor/action-zip@v0.1.0
         with:
-          args: zip -qq -r ./bundle.zip ./
+          args: zip -qq -r ./server/bundle.zip . -i ./server/*
       - name: default deploy
-        working-directory: ./server
         uses: appleboy/lambda-action@master
         with:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: us-east-2
           function_name: vleads-bug-report
-          zip_file: bundle.zip
+          zip_file: ./server/bundle.zip
