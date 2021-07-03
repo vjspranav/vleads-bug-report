@@ -8,10 +8,12 @@ const add_deps = () => {
   const link = document.createElement("link");
   link.rel = "stylesheet";
   link.type = "text/css";
-  link.href = "client/bug-report.css";
+  link.href =
+    "https://raw.githack.com/vjspranav/vleads-bug-report/main/client/bug-report.css";
   document.head.appendChild(link);
   const script = document.createElement("script");
-  script.src = "./client/html2canvas.js";
+  script.src =
+    "https://rawcdn.githack.com/vjspranav/vleads-bug-report/2def0aae0804156d78c5aa24a8e7101c704a2dbf/client/html2canvas.js";
   document.head.appendChild(script);
 };
 
