@@ -1,3 +1,5 @@
 node_modules/*
 **/node_modules/*
 server/keys/test.js
+index.html
+.vscode/*
