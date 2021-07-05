@@ -1,5 +1,7 @@
 "use_strict";
 
+import './html2canvas.js'
+
 const modal_div = document.createElement("div");
 const image_container = document.createElement("div");
 let b64 = "";
