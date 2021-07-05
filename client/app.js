@@ -67,10 +67,12 @@ const add_deps = () => {
   link.href =
     "https://raw.githack.com/vjspranav/vleads-bug-report/main/client/bug-report.css";
   document.head.appendChild(link);
+  /*
   const script = document.createElement("script");
   script.src =
     "https://rawcdn.githack.com/vjspranav/vleads-bug-report/2def0aae0804156d78c5aa24a8e7101c704a2dbf/client/html2canvas.js";
   document.head.appendChild(script);
+  */
 };
 
 const add_modal_box = () => {
