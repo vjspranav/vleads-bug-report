@@ -15,12 +15,8 @@ async function postData(url = "", data = {}) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data), // body data type must match "Content-Type" header
-  })
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => console.log(err));
-
+  });
+  return response;
   // return response.json(); // parses JSON response into native JavaScript objects
 }
 
@@ -54,12 +50,12 @@ const submit_bug_report = async (
       "\ndescription: " +
       description
   );
-  postData(
+  let response = await postData(
     (url = "https://uyvac0qyuh.execute-api.us-east-2.amazonaws.com/test/"),
     data
-  )
-    .then((data) => console.log(data.result))
-    .catch((err) => console.error(err));
+  );
+  console.log(response);
+  return response;
 };
 
 const get_lab_data = () => {
@@ -87,10 +83,10 @@ const create_button = () => {
   button.id = "submit";
   button.classList += "button";
   button.innerHTML = "Submit";
-  button.onclick = () => {
+  button.onclick = async () => {
     let ss_checkbox = document.getElementById("ss-chkbox");
     let tf_included = document.getElementById("bug-description").value;
-    submit_bug_report(
+    let response = await submit_bug_report(
       lab_data["label"],
       lab_data["labName"],
       lab_data["phase"],
@@ -98,6 +94,14 @@ const create_button = () => {
       ss_checkbox.checked ? b64 : false,
       tf_included ? tf_included : false
     );
+    console.log("Response is: " + response);
+    if (response.status) {
+      if (response.status === 200 || response.status === 201)
+        alert("Bug report submitted successfully");
+    } else {
+      alert("Bug report failed to submit, PLease try again");
+    }
+    modal_div.style.display = "none";
   };
   return button;
 };
