@@ -5,7 +5,23 @@ const image_container = document.createElement("div");
 let b64 = "";
 let lab_data = {};
 
-const submit_bug_report = (
+async function postData(url = "", data = {}) {
+  const response = await fetch(url, {
+    method: "POST",
+    mode: "no-cors",
+    cache: "no-cache",
+    credentials: "same-origin", // include, *same-origin, omit
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-KEY": "wBtn7JUmMYalFiBXKgS0mCvJ6iU3qtK60yAYrG10",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(data), // body data type must match "Content-Type" header
+  });
+  return response.json(); // parses JSON response into native JavaScript objects
+}
+
+const submit_bug_report = async (
   label,
   labname,
   phase,
@@ -13,6 +29,10 @@ const submit_bug_report = (
   img = false,
   description = false
 ) => {
+  const data = {
+    title: "Hello World 1",
+    description: "Trying to push from frontend",
+  };
   console.log(
     "Submitting bug report: \nlabel: " +
       label +
@@ -27,6 +47,10 @@ const submit_bug_report = (
       "\ndescription: " +
       description
   );
+  let response = await postData(
+    "https://uyvac0qyuh.execute-api.us-east-2.amazonaws.com/test/",
+    data
+  ).then((data) => console.log(data));
 };
 
 const get_lab_data = () => {

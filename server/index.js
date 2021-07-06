@@ -34,26 +34,26 @@ exports.handler = async (event) => {
   return response;
 };
 
-let uploadImage = async (b64_image, name) => {
-  let body =
-    'Adding an image to the repository <img src="https://raw.githubusercontent.com/vjspranav/TestIssuesRepo/main/' +
-    name +
-    '" alt="issue_image">';
-  // console.log(body)
-  // const result = await octokit.issues.create({
-  //   owner,
-  //   repo,
-  //   body,
-  //   title: name,
-  // })
-  const result = await octokit.repos.createOrUpdateFileContents({
-    owner,
-    repo,
-    message: "Adding an image to the repository",
-    path: name,
-    content: b64_image,
-  });
-};
+// let uploadImage = async (b64_image, name) => {
+//   let body =
+//     'Adding an image to the repository <img src="https://raw.githubusercontent.com/vjspranav/TestIssuesRepo/main/' +
+//     name +
+//     '" alt="issue_image">';
+//   // console.log(body)
+//   // const result = await octokit.issues.create({
+//   //   owner,
+//   //   repo,
+//   //   body,
+//   //   title: name,
+//   // })
+//   const result = await octokit.repos.createOrUpdateFileContents({
+//     owner,
+//     repo,
+//     message: "Adding an image to the repository",
+//     path: name,
+//     content: b64_image,
+//   });
+// };
 
-const b64_address = "b64 here";
-uploadImage(b64_address, "testss.png");
+// const b64_address = "b64 here";
+// uploadImage(b64_address, "testss.png");
