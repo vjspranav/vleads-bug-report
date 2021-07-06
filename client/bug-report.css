@@ -59,7 +59,8 @@
 }
 
 /* Checkboc */
-#chkbox {
+#ss-chkbox,
+#tf-chkbox {
   border: 1px solid transparent;
   text-align: left;
   float: left;

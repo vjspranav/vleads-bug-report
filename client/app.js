@@ -5,7 +5,14 @@ const image_container = document.createElement("div");
 let b64 = "";
 let lab_data = {};
 
-const submit_bug_report = (label, labname, phase, expname, img = false) => {
+const submit_bug_report = (
+  label,
+  labname,
+  phase,
+  expname,
+  img = false,
+  description = false
+) => {
   console.log(
     "Submitting bug report: \nlabel: " +
       label +
@@ -16,7 +23,9 @@ const submit_bug_report = (label, labname, phase, expname, img = false) => {
       "\nexpname: " +
       expname +
       "\nimg: " +
-      (img ? true : img)
+      (img ? true : img) +
+      "\ndescription: " +
+      description
   );
 };
 
@@ -27,16 +36,16 @@ const get_lab_data = () => {
   lab_data["expName"] = dataLayer[0]["expName"];
 };
 
-const create_checkbox = () => {
+const create_checkbox = (id, custom_label) => {
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
   checkbox.name = "image-checkbox";
   checkbox.value = "false";
-  checkbox.id = "chkbox";
+  checkbox.id = id;
 
   const label = document.createElement("label");
-  label.htmlFor = "chkbox";
-  label.appendChild(document.createTextNode("Add image to bug report"));
+  label.htmlFor = id;
+  label.appendChild(document.createTextNode(custom_label));
   return [label, checkbox];
 };
 
@@ -46,24 +55,34 @@ const create_button = () => {
   button.classList += "button";
   button.innerHTML = "Submit";
   button.onclick = () => {
-    let checkbox = document.getElementById("chkbox");
+    let ss_checkbox = document.getElementById("ss-chkbox");
+    let tf_included = document.getElementById("bug-description").value;
     submit_bug_report(
       lab_data["label"],
       lab_data["labName"],
       lab_data["phase"],
-      lab_data["experiment"],
-      checkbox.checked ? b64 : false
+      lab_data["expName"],
+      ss_checkbox.checked ? b64 : false,
+      tf_included ? tf_included : false
     );
   };
   return button;
+};
+
+const create_text_field = () => {
+  const tf = document.createElement("textarea");
+  tf.cols = 50;
+  tf.rows = 10;
+  tf.id = "bug-description";
+  tf.placeholder = "Please enter bug description if any";
+  return tf;
 };
 
 const add_deps = () => {
   const link = document.createElement("link");
   link.rel = "stylesheet";
   link.type = "text/css";
-  link.href =
-    "https://raw.githack.com/vjspranav/vleads-bug-report/main/client/bug-report.css";
+  link.href = "./client/bug-report.css";
   document.head.appendChild(link);
   const script = document.createElement("script");
   script.src =
@@ -80,7 +99,11 @@ const populate_modal = () => {
   const modal_content = document.createElement("div");
   modal_content.classList += "modal-content";
   const close_button = document.createElement("span");
-  const [checkbox, label] = create_checkbox();
+  const [ss_checkbox, ss_label] = create_checkbox(
+    "ss-chkbox",
+    "Add image to bug report"
+  );
+  const tf = create_text_field();
   close_button.innerHTML = "&times;";
   close_button.classList += "close";
   close_button.onclick = () => {
@@ -91,10 +114,11 @@ const populate_modal = () => {
   modal_content.appendChild(close_button);
   modal_content.appendChild(data);
   modal_div.appendChild(modal_content);
-  modal_content.appendChild(checkbox);
-  modal_content.appendChild(label);
+  modal_content.appendChild(ss_checkbox);
+  modal_content.appendChild(ss_label);
   image_container.id = "image-cotainer";
   modal_content.appendChild(image_container);
+  modal_content.appendChild(tf);
   modal_content.appendChild(create_button());
 };
 
