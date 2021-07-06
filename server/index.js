@@ -4,6 +4,7 @@ const path = require("path");
 const util = require("util");
 
 const readFilePromise = util.promisify(fs.readFile);
+let imageUrl = false;
 
 let config = {};
 try {
@@ -23,12 +24,7 @@ const octokit = new Octokit({
 const [owner, repo] = config.GITHUB_REPOSITORY.split("/");
 
 let uploadImage = async (b64_image, name) => {
-  let body =
-    'Adding an image to the repository <img src="https://raw.githubusercontent.com/vjspranav/TestIssuesRepo/main/' +
-    name +
-    '" alt="issue_image">';
-
-  const result = await octokit.repos.createOrUpdateFileContents({
+  return await octokit.repos.createOrUpdateFileContents({
     owner,
     repo,
     message: "Adding an image to the repository",
@@ -38,13 +34,27 @@ let uploadImage = async (b64_image, name) => {
 };
 
 exports.handler = async (event) => {
-  let title = event.title;
+  let title = "[ISSUE]" + event.expname;
+  let label = event.college;
   let result = "";
   if (event.img) {
     let date = Date.now();
-    result = uploadImage(img, event.college + Number.toString(date) + ".png");
+    let imageName = event.college + date.toString() + ".png";
+    result = await uploadImage(event.img, imageName);
+    imageUrl =
+      "https://raw.githubusercontent.com/vjspranav/TestIssuesRepo/main/" +
+      imageName;
   }
-  let body = event.description;
+  let body =
+    "Issue in\nLab: " + event.labname + "\nExperiment: " + event.expname;
+  if (event.description) body += "\nAdditional info: " + event.description;
+  if (imageUrl)
+    body +=
+      '<br> <a href="' +
+      imageUrl +
+      '>" <img height="300" src="' +
+      imageUrl +
+      '" alt="Issue image"></a>';
   const response = await octokit.issues.create({
     owner,
     repo,
