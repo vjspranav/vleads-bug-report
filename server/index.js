@@ -49,12 +49,7 @@ exports.handler = async (event) => {
     "Issue in\nLab: " + event.labname + "\nExperiment: " + event.expname;
   if (event.description) body += "\nAdditional info: " + event.description;
   if (imageUrl)
-    body +=
-      '<br> <a href="' +
-      imageUrl +
-      '>" <img height="300" src="' +
-      imageUrl +
-      '" alt="Issue image"></a>';
+    body += '<br> <img height="300" src="' + imageUrl + '" alt="Issue image">';
   const response = await octokit.issues.create({
     owner,
     repo,
