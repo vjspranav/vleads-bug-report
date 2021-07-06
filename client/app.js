@@ -8,21 +8,24 @@ let lab_data = {};
 async function postData(url = "", data = {}) {
   const response = await fetch(url, {
     method: "POST",
-    mode: "no-cors",
+    // mode: "no-co rs",
     cache: "no-cache",
-    credentials: "same-origin", // include, *same-origin, omit
     headers: {
+      "X-Api-Key": "wBtn7JUmMYalFiBXKgS0mCvJ6iU3qtK60yAYrG10",
       "Content-Type": "application/json",
-      "X-API-KEY": "wBtn7JUmMYalFiBXKgS0mCvJ6iU3qtK60yAYrG10",
-      Accept: "application/json",
     },
     body: JSON.stringify(data), // body data type must match "Content-Type" header
-  });
-  return response.json(); // parses JSON response into native JavaScript objects
+  })
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => console.log(err));
+
+  // return response.json(); // parses JSON response into native JavaScript objects
 }
 
 const submit_bug_report = async (
-  label,
+  college,
   labname,
   phase,
   expname,
@@ -30,12 +33,16 @@ const submit_bug_report = async (
   description = false
 ) => {
   const data = {
-    title: "Hello World 1",
-    description: "Trying to push from frontend",
+    college,
+    labname,
+    phase,
+    expname,
+    img,
+    description,
   };
   console.log(
-    "Submitting bug report: \nlabel: " +
-      label +
+    "Submitting bug report: \ncollege: " +
+      college +
       "\nlabname: " +
       labname +
       "\nphase: " +
@@ -47,10 +54,12 @@ const submit_bug_report = async (
       "\ndescription: " +
       description
   );
-  let response = await postData(
-    "https://uyvac0qyuh.execute-api.us-east-2.amazonaws.com/test/",
+  postData(
+    (url = "https://uyvac0qyuh.execute-api.us-east-2.amazonaws.com/test/"),
     data
-  ).then((data) => console.log(data));
+  )
+    .then((data) => console.log(data))
+    .catch((err) => console.error(err));
 };
 
 const get_lab_data = () => {
