@@ -56,7 +56,7 @@ exports.handler = async (event) => {
     body,
     title,
     result,
-    label,
+    labels: [label],
   });
   let res = {
     status: 200,
