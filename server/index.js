@@ -39,12 +39,10 @@ let uploadImage = async (b64_image, name) => {
 
 exports.handler = async (event) => {
   let title = event.title;
+  let result = "";
   if (event.img) {
     let date = Date.now();
-    let result = uploadImage(
-      img,
-      event.college + Number.toString(date) + ".png"
-    );
+    result = uploadImage(img, event.college + Number.toString(date) + ".png");
   }
   let body = event.description;
   const response = await octokit.issues.create({

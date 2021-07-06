@@ -58,7 +58,7 @@ const submit_bug_report = async (
     (url = "https://uyvac0qyuh.execute-api.us-east-2.amazonaws.com/test/"),
     data
   )
-    .then((data) => console.log(data))
+    .then((data) => console.log(data.result))
     .catch((err) => console.error(err));
 };
 
