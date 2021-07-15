@@ -2,13 +2,13 @@
 
 const modal_div = document.createElement("div");
 const image_container = document.createElement("div");
+let [imageBool, descriptionBool] = [false, false];
 let b64 = "";
 let lab_data = {};
 
 async function postData(url = "", data = {}) {
   const response = await fetch(url, {
     method: "POST",
-    // mode: "no-co rs",
     cache: "no-cache",
     headers: {
       "X-Api-Key": "wBtn7JUmMYalFiBXKgS0mCvJ6iU3qtK60yAYrG10",
@@ -86,22 +86,29 @@ const create_button = () => {
   button.onclick = async () => {
     let ss_checkbox = document.getElementById("ss-chkbox");
     let tf_included = document.getElementById("bug-description").value;
-    let response = await submit_bug_report(
-      lab_data["label"],
-      lab_data["labName"],
-      lab_data["phase"],
-      lab_data["expName"],
-      ss_checkbox.checked ? b64 : false,
-      tf_included ? tf_included : false
-    );
-    console.log("Response is: " + response);
-    if (response.status) {
-      if (response.status === 200 || response.status === 201)
-        alert("Bug report submitted successfully");
+    descriptionBool = tf_included ? true : false;
+    if (!imageBool && !descriptionBool) {
+      alert(
+        "Please include either screenshot or description. Both fields cannot be empty"
+      );
     } else {
-      alert("Bug report failed to submit, PLease try again");
+      let response = await submit_bug_report(
+        lab_data["label"],
+        lab_data["labName"],
+        lab_data["phase"],
+        lab_data["expName"],
+        ss_checkbox.checked ? b64 : false,
+        tf_included ? tf_included : false
+      );
+      console.log("Response is: " + response);
+      if (response.status) {
+        if (response.status === 200 || response.status === 201)
+          alert("Bug report submitted successfully");
+      } else {
+        alert("Bug report failed to submit, PLease try again");
+      }
+      modal_div.style.display = "none";
     }
-    modal_div.style.display = "none";
   };
   return button;
 };
@@ -136,10 +143,19 @@ const populate_modal = () => {
   const modal_content = document.createElement("div");
   modal_content.classList += "modal-content";
   const close_button = document.createElement("span");
-  const [ss_checkbox, ss_label] = create_checkbox(
+  const [ss_label, ss_checkbox] = create_checkbox(
     "ss-chkbox",
     "Add image to bug report"
   );
+  ss_checkbox.addEventListener("click", (e) => {
+    console.log(e.target.checked);
+    imageBool = e.target.checked;
+    if (e.target.checked) {
+      image_container.style.display = "block";
+    } else {
+      image_container.style.display = "none";
+    }
+  });
   const tf = create_text_field();
   close_button.innerHTML = "&times;";
   close_button.classList += "close";
