@@ -1,6 +1,7 @@
 "use_strict";
 
 const modal_div = document.createElement("div");
+const modal_content = document.createElement("div");
 const image_container = document.createElement("div");
 let [imageBool, descriptionBool] = [false, false];
 let b64 = "";
@@ -135,13 +136,28 @@ const add_deps = () => {
 };
 
 const add_modal_box = () => {
-  modal_div.classList += "modal";
+  modal_div.id += "modal-bug-report";
+  modal_div.classList += "modal fade";
+  modal_div.tabIndex = -1;
+  modal_div.setAttribute("aria-labelledby", "exampleModalLabel");
+  modal_div.setAttribute("aria-hidden", true);
+  const modal_dialog = document.createElement("div");
+  modal_dialog.classList += "modal-dialog";
+  modal_div.appendChild(modal_dialog);
+  modal_content.classList += "modal-content";
+  modal_dialog.appendChild(modal_content);
   document.getElementById("bug-report").appendChild(modal_div);
 };
 
 const populate_modal = () => {
-  const modal_content = document.createElement("div");
-  modal_content.classList += "modal-content";
+  modal_content.setAttribute(
+    "background-color",
+    "rgb(0, 0, 0)"
+  ); /* Fallback color */
+  modal_content.setAttribute(
+    "background-color",
+    "rgba(0, 0, 0, 0.4)"
+  ); /* Black w/ opacity */
   const close_button = document.createElement("span");
   const [ss_label, ss_checkbox] = create_checkbox(
     "ss-chkbox",
@@ -166,7 +182,6 @@ const populate_modal = () => {
   data.innerHTML = "This will be your bug report";
   modal_content.appendChild(close_button);
   modal_content.appendChild(data);
-  modal_div.appendChild(modal_content);
   modal_content.appendChild(ss_checkbox);
   modal_content.appendChild(ss_label);
   image_container.id = "image-cotainer";
@@ -179,8 +194,14 @@ const add_button = () => {
   const button_div = document.getElementById("bug-report");
   const button = document.createElement("button");
   button.id = "bug-report-button";
+  button.classList += "btn btn-primary";
+  button.setAttribute("data-bs-toggle", "modal");
+  button.setAttribute("data-bs-target", "#modal-bug-report");
   button.innerHTML = "Report Bug";
+  button.type = "button";
+
   button_div.appendChild(button);
+  button_div.appendChild(image_container);
   button.onclick = () => {
     var canvas = document.createElement("canvas");
     // canvas.scale = 0.3;
@@ -191,12 +212,16 @@ const add_button = () => {
     };
     html2canvas(document.body, opts).then(function (canvas) {
       canvas.id = "image-canva";
+      canvas.style["max-width"] = "100%";
+      canvas.style["max-height"] = "50vh";
+      canvas.style["object-fit"] = "contain";
+      canvas.style["object-position"] = "top left";
       image_container.innerHTML = "";
       image_container.appendChild(canvas);
       let dataURL = canvas.toDataURL();
       b64 = dataURL.split(",")[1];
     });
-    modal_div.style.display = "block";
+    // modal_div.style.display = "block";
     get_lab_data();
     console.log(lab_data);
   };
