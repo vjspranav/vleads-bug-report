@@ -1,0 +1,97 @@
+<style>
+  #image-canva {
+    max-width: 100%;
+    max-height: 50vh;
+    object-fit: contain;
+    object-position: top left;
+    border: 1px solid black;
+  }
+</style>
+<!-- Button trigger modal -->
+<button
+  id="bug-report-button"
+  type="button"
+  class="btn btn-primary"
+  data-bs-toggle="modal"
+  data-bs-target="#exampleModal"
+>
+  Bug Report
+</button>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Bug Report</h5>
+        <button
+          id="close_x_button"
+          type="button"
+          class="btn-close close-modal"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="ss-checkbox"
+            checked
+          />
+          <label class="form-check-label" for="ss-checkbox">
+            Include Screenshot
+          </label>
+        </div>
+        <div id="image-container"></div>
+        <div id="description">
+          <textarea
+            style="width: 100%; height: max-content"
+            placeholder="Please enter description here"
+            id="tf_description"
+          ></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary close-modal"
+          data-bs-dismiss="modal"
+          id="close-button"
+        >
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" id="submit">
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  let button = document.getElementById("button-bug-report");
+  let image_container = document.getElementById("image-container");
+  var opts = {
+    logging: true,
+    useCORS: true,
+  };
+  html2canvas(document.body, opts).then(function (canvas) {
+    canvas.id = "image-canva";
+    image_container.innerHTML = "";
+    image_container.appendChild(canvas);
+    let dataURL = canvas.toDataURL();
+    b64 = dataURL.split(",")[1];
+  });
+  document.getElementById("ss-checkbox").addEventListener("click", function () {
+    document.getElementById("image-container").style.display =
+      document.getElementById("ss-checkbox").checked ? "block" : "none";
+  });
+</script>
