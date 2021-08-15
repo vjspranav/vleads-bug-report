@@ -39,6 +39,17 @@
         ></button>
       </div>
       <div class="modal-body">
+        <h3>Some Common Issues</h3>
+        <div class="container">
+          <div id="checkboxes-question" class="row"></div>
+        </div>
+        <div id="description">
+          <textarea
+            style="width: 100%; height: max-content"
+            placeholder="Please enter description here"
+            id="tf_description"
+          ></textarea>
+        </div>
         <div class="form-check">
           <input
             class="form-check-input"
@@ -52,13 +63,6 @@
           </label>
         </div>
         <div id="image-container"></div>
-        <div id="description">
-          <textarea
-            style="width: 100%; height: max-content"
-            placeholder="Please enter description here"
-            id="tf_description"
-          ></textarea>
-        </div>
       </div>
       <div class="modal-footer">
         <button
@@ -76,22 +80,3 @@
     </div>
   </div>
 </div>
-<script>
-  let button = document.getElementById("button-bug-report");
-  let image_container = document.getElementById("image-container");
-  var opts = {
-    logging: true,
-    useCORS: true,
-  };
-  html2canvas(document.body, opts).then(function (canvas) {
-    canvas.id = "image-canva";
-    image_container.innerHTML = "";
-    image_container.appendChild(canvas);
-    let dataURL = canvas.toDataURL();
-    b64 = dataURL.split(",")[1];
-  });
-  document.getElementById("ss-checkbox").addEventListener("click", function () {
-    document.getElementById("image-container").style.display =
-      document.getElementById("ss-checkbox").checked ? "block" : "none";
-  });
-</script>

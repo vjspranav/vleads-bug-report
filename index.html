@@ -9,14 +9,41 @@
   </head>
   <body>
     <h1>Test Bug Report</h1>
+
+    <!-- 
+        Title
+        college -> dveloper-institute
+    -->
     <bug-report
+      context-info="Virtual Labs"
+      id="bug-report"
       college="IIITH"
       labname="DS"
       expname="bubblesort"
       phase="2"
-    ></bug-report>
+      page-type="SIMULATION"
+    >
+    </bug-report>
+
     <!-- Page Content -->
     <h1>Hello World</h1>
     <h2>This is a test page</h2>
+    <script>
+      // pure javascript
+      let object;
+      let httpRequest = new XMLHttpRequest(); // asynchronous request
+      httpRequest.open("GET", "./questions.json", true);
+      httpRequest.send();
+      httpRequest.addEventListener("readystatechange", function () {
+        if (this.readyState === this.DONE) {
+          // when the request has completed
+          object = JSON.parse(this.response);
+          console.log(object);
+          document
+            .getElementsByTagName("bug-report")[0]
+            .setAttribute("checkbox-json", JSON.stringify(object));
+        }
+      });
+    </script>
   </body>
 </html>

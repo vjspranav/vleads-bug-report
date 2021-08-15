@@ -60,11 +60,68 @@ customElements.define(
       super(); // always call super() first in the constructor.
       this.b64 = "";
       this.lab_data = {};
+      let attr = this.attributes,
+        array = Array.prototype.slice.call(attr);
+      console.log(array);
+      console.log(this.attributes);
+      this._shadowRoot = this.attachShadow({ mode: "open" });
+      this._pageType = this.getAttribute("page-type");
       this.lab_data.college = this.getAttribute("college");
       this.lab_data.labname = this.getAttribute("labname");
       this.lab_data.phase = this.getAttribute("phase");
       this.lab_data.expname = this.getAttribute("expname");
+      this._contextInfo = this.getAttribute("context-info");
       this.populateShadow(this.addScreenshot, this.b64, this.lab_data);
+    }
+
+    static get observedAttributes() {
+      return ["checkbox-json", "hasJson"];
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+      switch (name) {
+        case "checkbox-json":
+          console.log(`Value changed from ${oldValue} to ${newValue}`);
+          if (this._contextInfo === "Virtual Labs") this.addCheckboxes();
+          else console.log("No Extra options");
+          break;
+      }
+    }
+
+    // <div class="form-check">
+    //           <input id="option2" class="form-check-input" type="checkbox" />
+    //           <label class="form-check-label" for="option2"> Checkbox 2 </label>
+    // </div>
+
+    addCheckboxes() {
+      let counter = 0;
+      const questions = JSON.parse(this.checkbox_json);
+      const chb_div = this.shadowRoot.getElementById("checkboxes-question");
+      chb_div
+        ? questions[this.getAttribute("page-type")].forEach((element) => {
+            let p_div = document.createElement("div");
+            p_div.classList += "form-check";
+            let inp = document.createElement("input");
+            inp.id = "option" + (++counter).toString();
+            inp.classList += "form-check-input";
+            inp.type = "checkbox";
+            let lab = document.createElement("label");
+            lab.classList += "form-check-label";
+            lab.setAttribute("for", "option" + counter.toString());
+            lab.innerHTML = element;
+            p_div.appendChild(inp);
+            p_div.appendChild(lab);
+            chb_div.appendChild(p_div);
+          })
+        : false;
+    }
+
+    set checkbox_json(val) {
+      this.setAttribute("checkbox-json", val);
+    }
+
+    get checkbox_json() {
+      return this.getAttribute("checkbox-json");
     }
 
     async populateShadow(addScreenshot, b64, lab_data) {
@@ -72,7 +129,7 @@ customElements.define(
       const template = await loadHTML("./bug-report.html", import.meta.url);
       tmpl.innerHTML = template;
       // Attach a shadow root to the element.
-      let shadowRoot = this.attachShadow({ mode: "open" });
+      let shadowRoot = this._shadowRoot;
       shadowRoot.innerHTML = `<link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -139,6 +196,7 @@ customElements.define(
             }
           }
         });
+      this.addCheckboxes();
     }
 
     async addScreenshot(shadowRoot, b64) {
