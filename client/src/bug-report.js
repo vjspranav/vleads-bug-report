@@ -66,7 +66,7 @@ customElements.define(
       console.log(this.attributes);
       this._shadowRoot = this.attachShadow({ mode: "open" });
       this._pageType = this.getAttribute("page-type");
-      this.lab_data.college = this.getAttribute("college");
+      this.lab_data.college = this.getAttribute("developer-institute");
       this.lab_data.labname = this.getAttribute("labname");
       this.lab_data.phase = this.getAttribute("phase");
       this.lab_data.expname = this.getAttribute("expname");
