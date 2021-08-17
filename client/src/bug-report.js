@@ -104,8 +104,13 @@ customElements.define(
       const chb_div = this.shadowRoot.getElementById("checkboxes-question");
       if (questions) {
         this.shadowRoot.getElementById("custom-issues").style.display = "block";
+        const p_type =
+          this.getAttribute("page-type") in questions
+            ? this.getAttribute("page-type")
+            : "OTHERS";
+        console.log(p_type);
         chb_div
-          ? questions[this.getAttribute("page-type")].forEach((element) => {
+          ? questions[p_type].forEach((element) => {
               let p_div = document.createElement("div");
               p_div.classList += "form-check";
               let inp = document.createElement("input");
