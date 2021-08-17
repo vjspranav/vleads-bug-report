@@ -97,23 +97,28 @@ customElements.define(
       let counter = 0;
       const questions = JSON.parse(this.checkbox_json);
       const chb_div = this.shadowRoot.getElementById("checkboxes-question");
-      chb_div
-        ? questions[this.getAttribute("page-type")].forEach((element) => {
-            let p_div = document.createElement("div");
-            p_div.classList += "form-check";
-            let inp = document.createElement("input");
-            inp.id = "option" + (++counter).toString();
-            inp.classList += "form-check-input";
-            inp.type = "checkbox";
-            let lab = document.createElement("label");
-            lab.classList += "form-check-label";
-            lab.setAttribute("for", "option" + counter.toString());
-            lab.innerHTML = element;
-            p_div.appendChild(inp);
-            p_div.appendChild(lab);
-            chb_div.appendChild(p_div);
-          })
-        : false;
+      if (questions) {
+        this.shadowRoot.getElementById("custom-issues").style.display = "block";
+        chb_div
+          ? questions[this.getAttribute("page-type")].forEach((element) => {
+              let p_div = document.createElement("div");
+              p_div.classList += "form-check";
+              let inp = document.createElement("input");
+              inp.id = "option" + (++counter).toString();
+              inp.classList += "form-check-input";
+              inp.type = "checkbox";
+              let lab = document.createElement("label");
+              lab.classList += "form-check-label";
+              lab.setAttribute("for", "option" + counter.toString());
+              lab.innerHTML = element;
+              p_div.appendChild(inp);
+              p_div.appendChild(lab);
+              chb_div.appendChild(p_div);
+            })
+          : false;
+      } else {
+        this.shadowRoot.getElementById("custom-issues").style.display = "none";
+      }
     }
 
     set checkbox_json(val) {
