@@ -20,6 +20,7 @@ const submit_bug_report = async (
   labname,
   phase,
   expname,
+  issues,
   img = false,
   description = false
 ) => {
@@ -28,6 +29,7 @@ const submit_bug_report = async (
     labname,
     phase,
     expname,
+    issues,
     img,
     description,
   };
@@ -40,6 +42,8 @@ const submit_bug_report = async (
       phase +
       "\nexpname: " +
       expname +
+      "\nissues: " +
+      issues +
       "\nimg: " +
       (img ? true : img) +
       "\ndescription: " +
@@ -70,12 +74,13 @@ customElements.define(
       this.lab_data.labname = this.getAttribute("labname");
       this.lab_data.phase = this.getAttribute("phase");
       this.lab_data.expname = this.getAttribute("expname");
+      this.lab_data.issues = [];
       this._contextInfo = this.getAttribute("context-info");
       this.populateShadow(this.addScreenshot, this.b64, this.lab_data);
     }
 
     static get observedAttributes() {
-      return ["checkbox-json", "hasJson"];
+      return ["checkbox-json"];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -114,6 +119,14 @@ customElements.define(
               p_div.appendChild(inp);
               p_div.appendChild(lab);
               chb_div.appendChild(p_div);
+              inp.addEventListener("click", () => {
+                if (inp.checked) this.lab_data.issues.push(element);
+                else
+                  this.lab_data.issues = this.lab_data.issues.filter((el) => {
+                    return el !== element;
+                  });
+                console.log(this.lab_data.issues);
+              });
             })
           : false;
       } else {
@@ -189,6 +202,7 @@ customElements.define(
               lab_data["labname"],
               lab_data["phase"],
               lab_data["expname"],
+              lab_data["issues"],
               imageBool ? b64 : false,
               description ? description : false
             );
