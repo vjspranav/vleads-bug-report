@@ -36,6 +36,11 @@ let uploadImage = async (b64_image, name) => {
 exports.handler = async (event) => {
   let title = "[ISSUE]" + event.expname;
   let label = event.college;
+  let issues = event.issues;
+  issuesString = "";
+  issues.forEach((issue) => {
+    issuesString += "* " + issue + "\n";
+  });
   let result = "";
   if (event.img) {
     let date = Date.now();
@@ -47,6 +52,7 @@ exports.handler = async (event) => {
   }
   let body =
     "Issue in\nLab: " + event.labname + "\nExperiment: " + event.expname;
+  if (issues) body += "\n**Issues**\n" + issuesString;
   if (event.description) body += "\nAdditional info: " + event.description;
   if (imageUrl)
     body += '<br> <img height="300" src="' + imageUrl + '" alt="Issue image">';
