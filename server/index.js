@@ -35,7 +35,7 @@ let uploadImage = async (b64_image, name) => {
 
 exports.handler = async (event) => {
   let title = event.title;
-  let context = event.context_info;
+  let context = JSON.parse(event.context_info);
   let label = context.developer_institute;
   let issues = event.issues;
   let issuesString = "";
