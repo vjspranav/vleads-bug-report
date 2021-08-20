@@ -6,5 +6,5 @@
     "Incorrect Results/Observations",
     "Insufficient/Incorrect Instructions"
   ],
-  "OTHERS": ["Page Not Loading", "Content Not Visible", "Incorrect content"]
+  "DEFAULT": ["Page Not Loading", "Content Not Visible", "Incorrect content"]
 }

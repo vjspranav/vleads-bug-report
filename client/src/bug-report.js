@@ -16,32 +16,22 @@ async function postData(url = "", data = {}) {
 }
 
 const submit_bug_report = async (
-  college,
-  labname,
-  phase,
-  expname,
+  title,
+  context_info,
   issues,
   img = false,
   description = false
 ) => {
   const data = {
-    college,
-    labname,
-    phase,
-    expname,
+    title,
+    context_info,
     issues,
     img,
     description,
   };
   console.log(
-    "Submitting bug report: \ncollege: " +
-      college +
-      "\nlabname: " +
-      labname +
-      "\nphase: " +
-      phase +
-      "\nexpname: " +
-      expname +
+    "Submitting bug report: \ncontext: " +
+      context_info +
       "\nissues: " +
       issues +
       "\nimg: " +
@@ -63,80 +53,16 @@ customElements.define(
     constructor() {
       super(); // always call super() first in the constructor.
       this.b64 = "";
-      this.lab_data = {};
+      this.bug_info = {};
       let attr = this.attributes,
         array = Array.prototype.slice.call(attr);
       console.log(array);
       console.log(this.attributes);
+      this.page_type = this.getAttribute("page-type");
       this._shadowRoot = this.attachShadow({ mode: "open" });
-      this._pageType = this.getAttribute("page-type");
-      this.lab_data.college = this.getAttribute("developer-institute");
-      this.lab_data.labname = this.getAttribute("labname");
-      this.lab_data.phase = this.getAttribute("phase");
-      this.lab_data.expname = this.getAttribute("expname");
-      this.lab_data.issues = [];
-      this._contextInfo = this.getAttribute("context-info");
-      this.populateShadow(this.addScreenshot, this.b64, this.lab_data);
-    }
-
-    static get observedAttributes() {
-      return ["checkbox-json"];
-    }
-
-    attributeChangedCallback(name, oldValue, newValue) {
-      switch (name) {
-        case "checkbox-json":
-          console.log(`Value changed from ${oldValue} to ${newValue}`);
-          if (this._contextInfo === "Virtual Labs") this.addCheckboxes();
-          else console.log("No Extra options");
-          break;
-      }
-    }
-
-    // <div class="form-check">
-    //           <input id="option2" class="form-check-input" type="checkbox" />
-    //           <label class="form-check-label" for="option2"> Checkbox 2 </label>
-    // </div>
-
-    addCheckboxes() {
-      let counter = 0;
-      const questions = JSON.parse(this.checkbox_json);
-      const chb_div = this.shadowRoot.getElementById("checkboxes-question");
-      if (questions) {
-        this.shadowRoot.getElementById("custom-issues").style.display = "block";
-        const p_type =
-          this.getAttribute("page-type") in questions
-            ? this.getAttribute("page-type")
-            : "OTHERS";
-        console.log(p_type);
-        chb_div
-          ? questions[p_type].forEach((element) => {
-              let p_div = document.createElement("div");
-              p_div.classList += "form-check";
-              let inp = document.createElement("input");
-              inp.id = "option" + (++counter).toString();
-              inp.classList += "form-check-input";
-              inp.type = "checkbox";
-              let lab = document.createElement("label");
-              lab.classList += "form-check-label";
-              lab.setAttribute("for", "option" + counter.toString());
-              lab.innerHTML = element;
-              p_div.appendChild(inp);
-              p_div.appendChild(lab);
-              chb_div.appendChild(p_div);
-              inp.addEventListener("click", () => {
-                if (inp.checked) this.lab_data.issues.push(element);
-                else
-                  this.lab_data.issues = this.lab_data.issues.filter((el) => {
-                    return el !== element;
-                  });
-                console.log(this.lab_data.issues);
-              });
-            })
-          : false;
-      } else {
-        this.shadowRoot.getElementById("custom-issues").style.display = "none";
-      }
+      this.bug_info.issues = [];
+      this.bug_info.title = this.getAttribute("title");
+      this.populateShadow(this.addScreenshot, this.b64, this.bug_info);
     }
 
     set checkbox_json(val) {
@@ -147,7 +73,75 @@ customElements.define(
       return this.getAttribute("checkbox-json");
     }
 
-    async populateShadow(addScreenshot, b64, lab_data) {
+    set context_info(val) {
+      this.setAttribute("context-info", val);
+    }
+
+    get context_info() {
+      return this.getAttribute("context-info");
+    }
+
+    static get observedAttributes() {
+      return ["checkbox-json", "context-info"];
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+      switch (name) {
+        case "checkbox-json":
+          console.log(`Value changed from ${oldValue} to ${newValue}`);
+          this.addCheckboxes();
+          break;
+        case "context-info":
+          console.log(`Value changed from ${oldValue} to ${newValue}`);
+          this.bug_info["context_info"] = newValue;
+          break;
+      }
+    }
+
+    addCheckboxes() {
+      let counter = 0;
+      const questions = JSON.parse(this.checkbox_json);
+      const chb_div = this.shadowRoot.getElementById("checkboxes-question");
+      if (questions) {
+        this.shadowRoot.getElementById("custom-issues").style.display = "block";
+        const p_type =
+          this.getAttribute("page-type") in questions
+            ? [this.getAttribute("page-type"), "DEFAULT"]
+            : ["DEFAULT"];
+        console.log(p_type);
+        chb_div
+          ? p_type.forEach((page_type) => {
+              questions[page_type].forEach((element) => {
+                let p_div = document.createElement("div");
+                p_div.classList += "form-check";
+                let inp = document.createElement("input");
+                inp.id = "option" + (++counter).toString();
+                inp.classList += "form-check-input";
+                inp.type = "checkbox";
+                let lab = document.createElement("label");
+                lab.classList += "form-check-label";
+                lab.setAttribute("for", "option" + counter.toString());
+                lab.innerHTML = element;
+                p_div.appendChild(inp);
+                p_div.appendChild(lab);
+                chb_div.appendChild(p_div);
+                inp.addEventListener("click", () => {
+                  if (inp.checked) this.bug_info.issues.push(element);
+                  else
+                    this.bug_info.issues = this.bug_info.issues.filter((el) => {
+                      return el !== element;
+                    });
+                  console.log(this.bug_info.issues);
+                });
+              });
+            })
+          : false;
+      } else {
+        this.shadowRoot.getElementById("custom-issues").style.display = "none";
+      }
+    }
+
+    async populateShadow(addScreenshot, b64, bug_info) {
       const tmpl = document.createElement("template");
       const template = await loadHTML("./bug-report.html", import.meta.url);
       tmpl.innerHTML = template;
@@ -203,11 +197,9 @@ customElements.define(
             );
           } else {
             let res = await submit_bug_report(
-              lab_data["college"],
-              lab_data["labname"],
-              lab_data["phase"],
-              lab_data["expname"],
-              lab_data["issues"],
+              bug_info["title"],
+              bug_info["context_info"],
+              bug_info["issues"],
               imageBool ? b64 : false,
               description ? description : false
             );
