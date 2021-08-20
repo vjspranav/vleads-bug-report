@@ -34,8 +34,9 @@ let uploadImage = async (b64_image, name) => {
 };
 
 exports.handler = async (event) => {
-  let title = "[ISSUE]" + event.expname;
-  let label = event.college;
+  let title = event.title;
+  let context = event.context_info;
+  let label = context.developer_institute;
   let issues = event.issues;
   issuesString = "";
   issues.forEach((issue) => {
@@ -51,7 +52,7 @@ exports.handler = async (event) => {
       imageName;
   }
   let body =
-    "Issue in\nLab: " + event.labname + "\nExperiment: " + event.expname;
+    "Issue in\nLab: " + context.labname + "\nExperiment: " + context.expname;
   if (issues) body += "\n**Issues**\n" + issuesString;
   if (event.description) body += "\nAdditional info: " + event.description;
   if (imageUrl)
