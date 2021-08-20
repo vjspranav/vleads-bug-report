@@ -38,7 +38,7 @@ exports.handler = async (event) => {
   let context = event.context_info;
   let label = context.developer_institute;
   let issues = event.issues;
-  issuesString = "";
+  let issuesString = "";
   issues.forEach((issue) => {
     issuesString += "* " + issue + "\n";
   });
