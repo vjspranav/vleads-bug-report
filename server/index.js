@@ -45,7 +45,7 @@ exports.handler = async (event) => {
   let result = "";
   if (event.img) {
     let date = Date.now();
-    let imageName = event.college + date.toString() + ".png";
+    let imageName = context.developer_institute + date.toString() + ".png";
     result = await uploadImage(event.img, imageName);
     imageUrl =
       "https://raw.githubusercontent.com/vjspranav/TestIssuesRepo/main/" +
