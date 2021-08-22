@@ -252,7 +252,7 @@ customElements.define(
                 });
                 // Dispatch the event.
                 shadowRoot.dispatchEvent(event);
-                alert("Bug report submitted successfully");
+                // alert("Bug report submitted successfully");
               } else {
                 const event = new CustomEvent("submitted", {
                   detail: {
@@ -276,7 +276,7 @@ customElements.define(
               });
               // Dispatch the event.
               shadowRoot.dispatchEvent(event);
-              alert("Bug report failed to submit, PLease try again");
+              // alert("Bug report failed to submit, PLease try again");
             }
           }
         });
