@@ -1,6 +1,41 @@
 import loadHTML from "./template/loadHTML.js";
 import "./template/html2canvas.js";
 
+function getDateTime() {
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const today = new Date();
+  let timzoneOffset = today.getTimezoneOffset();
+  const posneg = timzoneOffset > 0 ? "-" : "+";
+  timzoneOffset = Math.abs(timzoneOffset / 60);
+  let date =
+    today.getDate().toString() +
+    " " +
+    monthNames[today.getMonth()] +
+    ", " +
+    today.getHours().toString() +
+    ":" +
+    today.getMinutes().toString() +
+    " GMT " +
+    posneg +
+    Math.trunc(timzoneOffset).toString() +
+    ":" +
+    Math.trunc((timzoneOffset % 1) * 100).toString();
+  return date;
+}
+
 async function postData(url = "", data = {}) {
   const res = await fetch(url, {
     method: "POST",
@@ -28,6 +63,7 @@ const submit_bug_report = async (
     issues,
     img,
     description,
+    datetime: getDateTime(),
   };
   console.log(
     "Submitting bug report: \ncontext: " +
@@ -205,9 +241,41 @@ customElements.define(
             );
             console.log("Response is: " + res);
             if (res.status) {
-              if (res.status === 200 || res.status === 201)
+              if (res.status === 200 || res.status === 201) {
+                const event = new CustomEvent("submitted", {
+                  detail: {
+                    title: bug_info["title"],
+                    status: res.status,
+                    message: "Bug Reported Successfully",
+                  },
+                  composed: true, // Like this
+                });
+                // Dispatch the event.
+                shadowRoot.dispatchEvent(event);
                 alert("Bug report submitted successfully");
+              } else {
+                const event = new CustomEvent("submitted", {
+                  detail: {
+                    title: bug_info["title"],
+                    status: res.status,
+                    message: "Bug report failed",
+                  },
+                  composed: true, // Like this
+                });
+                // Dispatch the event.
+                shadowRoot.dispatchEvent(event);
+              }
             } else {
+              const event = new CustomEvent("submitted", {
+                detail: {
+                  title: bug_info["title"],
+                  status: res.status,
+                  message: "Internal Server Error",
+                },
+                composed: true, // Like this
+              });
+              // Dispatch the event.
+              shadowRoot.dispatchEvent(event);
               alert("Bug report failed to submit, PLease try again");
             }
           }

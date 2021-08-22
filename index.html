@@ -43,6 +43,11 @@
           document
             .getElementsByTagName("bug-report")[0]
             .setAttribute("context-info", JSON.stringify(obj2));
+          document
+            .getElementsByTagName("bug-report")[0]
+            .addEventListener("bugreport_success", (event) => {
+              console.log(event);
+            });
         }
       });
     </script>
