@@ -97,8 +97,11 @@ customElements.define(
       // Set Position
       if (!this.hasAttribute("position")) {
         this.setAttribute("position", "topright");
+      } else {
+        this.position = this.getAttribute("position");
+        this.position =
+          this.position.split(" ") === 2 ? this.position : "top right";
       }
-      this.position = this.getAttribute("position");
       this.page_type = this.getAttribute("page-type");
       this._shadowRoot = this.attachShadow({ mode: "open" });
       this.bug_info.issues = [];
