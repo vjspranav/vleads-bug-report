@@ -38,6 +38,7 @@ exports.handler = async (event) => {
   let context = JSON.parse(event.context_info);
   let label = context.developer_institute;
   let issues = event.issues;
+  let datetime = event.datetime;
   let issuesString = "";
   issues.forEach((issue) => {
     issuesString += "* " + issue + "\n";
@@ -52,11 +53,19 @@ exports.handler = async (event) => {
       imageName;
   }
   let body =
-    "Issue in\nLab: " + context.labname + "\nExperiment: " + context.expname;
-  if (issues) body += "\n**Issues**\n" + issuesString;
+    "Bug Reported on " +
+    datetime +
+    "in \nLab - " +
+    context.labname +
+    "\nExperiment - " +
+    context.expname;
+  if (issues) body += "\n**Type(s) of Issue - **\n" + issuesString;
   if (event.description) body += "\nAdditional info: " + event.description;
   if (imageUrl)
-    body += '<br> <img height="300" src="' + imageUrl + '" alt="Issue image">';
+    body +=
+      '**Screenshot of Issue-<br> <img height="300" src="' +
+      imageUrl +
+      '" alt="Issue image">';
   const response = await octokit.issues.create({
     owner,
     repo,
