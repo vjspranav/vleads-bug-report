@@ -94,11 +94,21 @@ customElements.define(
         array = Array.prototype.slice.call(attr);
       console.log(array);
       console.log(this.attributes);
+      // Set Position
+      if (!this.hasAttribute("position")) {
+        this.setAttribute("position", "topright");
+      }
+      this.position = this.getAttribute("position");
       this.page_type = this.getAttribute("page-type");
       this._shadowRoot = this.attachShadow({ mode: "open" });
       this.bug_info.issues = [];
       this.bug_info.title = this.getAttribute("title");
-      this.populateShadow(this.addScreenshot, this.b64, this.bug_info);
+      this.populateShadow(
+        this.addScreenshot,
+        this.b64,
+        this.bug_info,
+        this.position
+      );
     }
 
     set checkbox_json(val) {
@@ -192,7 +202,10 @@ customElements.define(
     `;
       shadowRoot.appendChild(tmpl.content.cloneNode(true));
       let modal = shadowRoot.querySelector(".modal");
-
+      // Set Position
+      this.position.split(" ").forEach((pos) => {
+        shadowRoot.getElementById("bug-report-button").style[pos] = 0;
+      });
       shadowRoot
         .getElementById("bug-report-button")
         .addEventListener("click", async function (e) {
