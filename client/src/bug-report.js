@@ -97,11 +97,11 @@ customElements.define(
       // Set Position
       if (!this.hasAttribute("position")) {
         this.setAttribute("position", "top right");
-      } else {
-        this.position = this.getAttribute("position");
-        this.position =
-          this.position.split(" ").length === 2 ? this.position : "top right";
       }
+      this.position = this.getAttribute("position");
+      this.position =
+        this.position.split(" ").length === 2 ? this.position : "top right";
+
       this.page_type = this.getAttribute("page-type");
       this._shadowRoot = this.attachShadow({ mode: "open" });
       this.bug_info.issues = [];
@@ -152,6 +152,7 @@ customElements.define(
       const questions = JSON.parse(this.checkbox_json);
       const chb_div = this.shadowRoot.getElementById("checkboxes-question");
       if (questions) {
+        console.log(this.shadowRoot.getElementById("custom-issues"));
         this.shadowRoot.getElementById("custom-issues").style.display = "block";
         const p_type =
           this.getAttribute("page-type") in questions
