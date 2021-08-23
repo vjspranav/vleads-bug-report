@@ -96,7 +96,7 @@ customElements.define(
       console.log(this.attributes);
       // Set Position
       if (!this.hasAttribute("position")) {
-        this.setAttribute("position", "topright");
+        this.setAttribute("position", "top right");
       } else {
         this.position = this.getAttribute("position");
         this.position =
