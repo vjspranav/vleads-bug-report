@@ -100,7 +100,7 @@ customElements.define(
       } else {
         this.position = this.getAttribute("position");
         this.position =
-          this.position.split(" ") === 2 ? this.position : "top right";
+          this.position.split(" ").length === 2 ? this.position : "top right";
       }
       this.page_type = this.getAttribute("page-type");
       this._shadowRoot = this.attachShadow({ mode: "open" });
