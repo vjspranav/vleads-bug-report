@@ -55,7 +55,7 @@ exports.handler = async (event) => {
   let body =
     "### **Bug Reported on " +
     datetime +
-    "in* \nLab - " +
+    " in** \nLab - " +
     context.labname +
     "\nExperiment - " +
     context.expname;
