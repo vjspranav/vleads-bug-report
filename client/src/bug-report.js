@@ -308,7 +308,6 @@ customElements.define(
       };
       b64 = await html2canvas(document.body, opts).then(function (canvas) {
         canvas.id = "image-canva";
-        canvas.height="auto"
         image_container.innerHTML = "";
         image_container.appendChild(canvas);
         let dataURL = canvas.toDataURL();
