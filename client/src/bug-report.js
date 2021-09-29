@@ -100,7 +100,7 @@ customElements.define(
       }
       this.position = this.getAttribute("position");
       this.position =
-        this.position.split(" ").length === 2 && this.position !== "override"
+        this.position.split(" ").length === 2 || this.position === "override"
           ? this.position
           : "top right";
 
