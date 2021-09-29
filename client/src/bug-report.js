@@ -213,6 +213,8 @@ customElements.define(
         this.position.split(" ").forEach((pos) => {
           shadowRoot.getElementById("bug-report-button").style[pos] = 0;
         });
+        shadowRoot.getElementById("bug-report-button").style.position =
+          "absolute";
       }
       shadowRoot
         .getElementById("bug-report-button")
