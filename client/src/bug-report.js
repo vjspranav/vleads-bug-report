@@ -104,6 +104,7 @@ customElements.define(
           ? this.position
           : "top right";
       this.button_style = this.getAttribute("button_style");
+      this.custom_button_class = this.getAttribute("custom_button_class");
       this.page_type = this.getAttribute("page-type");
       this._shadowRoot = this.attachShadow({ mode: "open" });
       this.bug_info.issues = [];
@@ -219,6 +220,10 @@ customElements.define(
       if (this.button_style) {
         shadowRoot.getElementById("bug-report-button").style =
           this.button_style;
+      }
+      if (this.custom_button_class) {
+        shadowRoot.getElementById("bug-report-button").classList =
+          this.custom_button_class;
       }
       shadowRoot
         .getElementById("bug-report-button")
