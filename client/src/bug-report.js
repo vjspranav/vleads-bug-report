@@ -103,7 +103,7 @@ customElements.define(
         this.position.split(" ").length === 2 || this.position === "override"
           ? this.position
           : "top right";
-
+      this.button_style = this.getAttribute("button_style");
       this.page_type = this.getAttribute("page-type");
       this._shadowRoot = this.attachShadow({ mode: "open" });
       this.bug_info.issues = [];
@@ -216,6 +216,10 @@ customElements.define(
         shadowRoot.getElementById("bug-report-button").style.position =
           "absolute";
       }
+      if (this.button_style) {
+        shadowRoot.getElementById("bug-report-button").style =
+          this.button_style;
+      }
       shadowRoot
         .getElementById("bug-report-button")
         .addEventListener("click", async function (e) {
@@ -325,6 +329,7 @@ customElements.define(
         .addEventListener("click", function () {
           shadowRoot.getElementById("image-container").style.display =
             shadowRoot.getElementById("ss-checkbox").checked ? "block" : "none";
+          shadowRoot.getElementById("image-canva").style["height"] = "auto";
         });
       return b64;
     }
