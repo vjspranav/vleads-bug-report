@@ -39,6 +39,7 @@ exports.handler = async (event) => {
   let label = context.developer_institute;
   let issues = event.issues;
   let datetime = event.datetime;
+  let experiment_link = event.experiment_link;
   let issuesString = "";
   issues.forEach((issue) => {
     issuesString += "* " + issue + "\n";
@@ -49,7 +50,7 @@ exports.handler = async (event) => {
     let imageName = context.developer_institute + date.toString() + ".png";
     result = await uploadImage(event.img, imageName);
     imageUrl =
-      "https://raw.githubusercontent.com/vjspranav/TestIssuesRepo/main/" +
+      "https://raw.githubusercontent.com/virtual-labs/bugs-virtual-labs/main/" +
       imageName;
   }
   let body =
@@ -61,6 +62,7 @@ exports.handler = async (event) => {
     context.expname;
   if (issues) body += "\n**Type(s) of Issue -**\n" + issuesString;
   if (event.description) body += "\nAdditional info- " + event.description;
+  if (experiment_link) body += "\nExperiment Link - " + experiment_link;
   if (imageUrl)
     body +=
       '\n**Screenshot of Issue**-<br> <img height="300" src="' +
